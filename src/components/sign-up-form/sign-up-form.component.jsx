@@ -17,7 +17,6 @@ const SignUpForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         const resetFormFields = () => {
             setFormFields(deafultFormFields);
         }
@@ -29,9 +28,7 @@ const SignUpForm = () => {
 
         try {
             const {user} = await createAuthUserWithEmailAndPassword(email, password);
-
             await createUserDocumentFromAuth(user, {displayName});
-
             resetFormFields();
 
         } catch (err) {
