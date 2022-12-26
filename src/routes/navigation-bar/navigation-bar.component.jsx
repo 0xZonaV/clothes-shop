@@ -3,10 +3,14 @@ import {Fragment, useContext} from "react";
 import {ReactComponent as CrwmLogo} from "../../assets/crown.svg";
 import './navigation-bar.styles.scss';
 import {UserContext} from "../../context/user-context/user.context";
+import {CartDropdownSwitchContext} from "../../context/cart-dropdown-switch/cart-dropdown-switch.context";
 import {userSignOut} from "../../utils/firebase/firebase.utils";
+import CartIcon from "../../components/cart-icon/cart-icon.component";
+import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
 
 const NavigationBar = () => {
     const {currentUser} = useContext(UserContext);
+    const {isCartOpen} = useContext(CartDropdownSwitchContext)
 
     return(
         <Fragment>
@@ -22,7 +26,9 @@ const NavigationBar = () => {
                         ) : (
                             <Link className='nav-link' to='/auth'>SIGN IN</Link>
                         )}
+                        <CartIcon />
                 </div>
+                {isCartOpen && <CartDropdown />}
             </div>
             <Outlet />
         </Fragment>
