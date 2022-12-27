@@ -16,21 +16,30 @@ const addCartItem = (cartItems, productToAdd) => {
     return ([...cartItems, {...productToAdd, quantity: 1}]);
 }
 
+const updateAllQuantity = (cartItems) => {
+    const initialValue = 1;
+    return cartItems.reduce((accumulator, currentValue) => accumulator+currentValue.quantity, initialValue)
+}
+
+
+
 export const ItemsContext = createContext({
     cartItems: [],
-    addItemToCart: () => {}
+    addItemToCart: () => {},
+    allQuantity: 0
 })
 
 export const ItemsProvider = ({children}) => {
     const items = Items;
     const [cartItems, setCartItems] = useState([]);
+    const [allQuantity, setAllQuantity] = useState(0);
 
     const addItemToCart = (productToAdd) => {
        setCartItems(addCartItem(cartItems, productToAdd));
-        console.log(cartItems);
+       setAllQuantity(updateAllQuantity(cartItems, productToAdd));
     }
 
-    const value = {items, addItemToCart, cartItems}
+    const value = {items, addItemToCart, cartItems, allQuantity, setAllQuantity}
 
     return(
         <ItemsContext.Provider value={value}>{children}</ItemsContext.Provider>
