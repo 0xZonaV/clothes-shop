@@ -3,6 +3,7 @@ import {Route, Routes} from "react-router-dom";
 import NavigationBar from "./routes/navigation-bar/navigation-bar.component";
 import ShopPage from "./routes/shop/shop-page.component";
 import Authentication from "./routes/authentication/authentication.component";
+import CheckoutPage from "./routes/checkout/checkout-page.component";
 
 const App = () => {
 
@@ -12,6 +13,7 @@ const App = () => {
             <Route index element={<HomePage />} />
             <Route path='shop' element={<ShopPage />} />
             <Route path='auth' element={<Authentication />} />
+            <Route path='checkout' element={<CheckoutPage />} />
         </Route>
       </Routes>
 
