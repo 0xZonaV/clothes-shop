@@ -1,5 +1,5 @@
 import {createContext, useEffect, useState} from "react";
-import Items from '../../shop-data.json';
+import {getCategoriesAndDocuments} from "../../utils/firebase/firebase.utils";
 
 const addCartItem = (cartItems, productToAdd) => {
 
@@ -45,11 +45,12 @@ export const ItemsContext = createContext({
         },
         removeItem: () => {
         },
-        totalCost: 0
+        totalCost: 0,
+        categoriesMap: {}
     })
 
 export const ItemsProvider = ({children}) => {
-    const items = Items;
+    const [categoriesMap, setCategoriesMap] = useState({});
     const [cartItems, setCartItems] = useState([]);
     const [allQuantity, setAllQuantity] = useState(0);
     const [totalCost, setTotalCost] = useState(0);
@@ -62,21 +63,30 @@ export const ItemsProvider = ({children}) => {
     useEffect(() => {
         const newAllQuantity = cartItems.reduce((total, cartItem) => total + cartItem.quantity,0);
         setAllQuantity(newAllQuantity);
-    }, [cartItems])
+    }, [cartItems]);
+
+    useEffect(() => {
+        const getCategoriesMap = async () => {
+            const result = await getCategoriesAndDocuments();
+            setCategoriesMap(result);
+        };
+
+        getCategoriesMap()
+    }, []);
 
     const addItemToCart = (productToAdd) => {
        setCartItems(addCartItem(cartItems, productToAdd));
-    }
+    };
 
     const decreaseItemQuantity = (productToDecrease) => {
         setCartItems(decreaseItem(cartItems, productToDecrease));
-    }
+    };
 
     const removeItem = (productToRemove) => {
         setCartItems(removeCartItem(cartItems, productToRemove));
-    }
+    };
 
-    const value = {items, addItemToCart, cartItems, allQuantity, decreaseItemQuantity, removeItem, totalCost}
+    const value = {categoriesMap, addItemToCart, cartItems, allQuantity, decreaseItemQuantity, removeItem, totalCost};
 
     return(
         <ItemsContext.Provider value={value}>{children}</ItemsContext.Provider>
