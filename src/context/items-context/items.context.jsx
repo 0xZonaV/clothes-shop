@@ -1,4 +1,4 @@
-import {createContext, useEffect, useState} from "react";
+import {createContext, useEffect, useReducer, useState} from "react";
 import {getCategoriesAndDocuments} from "../../utils/firebase/firebase.utils";
 
 const addCartItem = (cartItems, productToAdd) => {
@@ -49,21 +49,54 @@ export const ItemsContext = createContext({
         categoriesMap: {}
     })
 
+    const INITIAL_STATE = {
+        cartItems: [],
+        allQuantity: 0,
+        totalCost: 0
+    }
+
+    export const CART_ACTION_TYPES = {
+        SET_CART_ITEMS: 'SET_CART_ITEMS',
+        SET_QUANTITY: 'SET_QUANTITY',
+        SET_COST: 'SET_COST'
+    }
+
+    const cartReducer = (state, action) => {
+        const {type, payload} = action;
+        const {SET_CART_ITEMS} = CART_ACTION_TYPES;
+
+
+        switch (type) {
+            case SET_CART_ITEMS:
+                return {...state, ...payload};
+            default:
+                throw new Error(`Unhandled type ${type} in cartReducer`);
+        }
+    };
+
 export const ItemsProvider = ({children}) => {
+
+
+
+    const [{ cartItems, allQuantity, totalCost}, dispatch] = useReducer(cartReducer, INITIAL_STATE);
+    const {SET_CART_ITEMS} = CART_ACTION_TYPES;
+
     const [categoriesMap, setCategoriesMap] = useState({});
-    const [cartItems, setCartItems] = useState([]);
-    const [allQuantity, setAllQuantity] = useState(0);
-    const [totalCost, setTotalCost] = useState(0);
 
-    useEffect(() => {
+    const updateCartItemsReducer = (cartItems) => {
         const newCartTotal = cartItems.reduce((total,cartItem) => total+(cartItem.quantity * cartItem.price), 0);
-        setTotalCost(newCartTotal)
-    }, [cartItems]);
 
-    useEffect(() => {
         const newAllQuantity = cartItems.reduce((total, cartItem) => total + cartItem.quantity,0);
-        setAllQuantity(newAllQuantity);
-    }, [cartItems]);
+
+        const payload = {
+            cartItems,
+            allQuantity: newAllQuantity,
+            totalCost: newCartTotal
+        };
+
+        dispatch({type: SET_CART_ITEMS, payload });
+    };
+
 
     useEffect(() => {
         const getCategoriesMap = async () => {
@@ -74,17 +107,12 @@ export const ItemsProvider = ({children}) => {
         getCategoriesMap()
     }, []);
 
-    const addItemToCart = (productToAdd) => {
-       setCartItems(addCartItem(cartItems, productToAdd));
-    };
+    const addItemToCart = (productToAdd) => updateCartItemsReducer(addCartItem(cartItems, productToAdd));
 
-    const decreaseItemQuantity = (productToDecrease) => {
-        setCartItems(decreaseItem(cartItems, productToDecrease));
-    };
+    const decreaseItemQuantity = (productToDecrease) => updateCartItemsReducer(decreaseItem(cartItems, productToDecrease));
 
-    const removeItem = (productToRemove) => {
-        setCartItems(removeCartItem(cartItems, productToRemove));
-    };
+
+    const removeItem = (productToRemove) => updateCartItemsReducer(removeCartItem(cartItems, productToRemove));
 
     const value = {categoriesMap, addItemToCart, cartItems, allQuantity, decreaseItemQuantity, removeItem, totalCost};
 
