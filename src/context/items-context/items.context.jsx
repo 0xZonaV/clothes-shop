@@ -1,5 +1,4 @@
-import {createContext, useEffect, useReducer, useState} from "react";
-import {getCategoriesAndDocuments} from "../../utils/firebase/firebase.utils";
+import {createContext, useReducer} from "react";
 
 const addCartItem = (cartItems, productToAdd) => {
 
@@ -46,7 +45,6 @@ export const ItemsContext = createContext({
         removeItem: () => {
         },
         totalCost: 0,
-        categoriesMap: {}
     })
 
     const INITIAL_STATE = {
@@ -75,13 +73,8 @@ export const ItemsContext = createContext({
     };
 
 export const ItemsProvider = ({children}) => {
-
-
-
     const [{ cartItems, allQuantity, totalCost}, dispatch] = useReducer(cartReducer, INITIAL_STATE);
     const {SET_CART_ITEMS} = CART_ACTION_TYPES;
-
-    const [categoriesMap, setCategoriesMap] = useState({});
 
     const updateCartItemsReducer = (cartItems) => {
         const newCartTotal = cartItems.reduce((total,cartItem) => total+(cartItem.quantity * cartItem.price), 0);
@@ -97,16 +90,6 @@ export const ItemsProvider = ({children}) => {
         dispatch({type: SET_CART_ITEMS, payload });
     };
 
-
-    useEffect(() => {
-        const getCategoriesMap = async () => {
-            const result = await getCategoriesAndDocuments();
-            setCategoriesMap(result);
-        };
-
-        getCategoriesMap()
-    }, []);
-
     const addItemToCart = (productToAdd) => updateCartItemsReducer(addCartItem(cartItems, productToAdd));
 
     const decreaseItemQuantity = (productToDecrease) => updateCartItemsReducer(decreaseItem(cartItems, productToDecrease));
@@ -114,7 +97,7 @@ export const ItemsProvider = ({children}) => {
 
     const removeItem = (productToRemove) => updateCartItemsReducer(removeCartItem(cartItems, productToRemove));
 
-    const value = {categoriesMap, addItemToCart, cartItems, allQuantity, decreaseItemQuantity, removeItem, totalCost};
+    const value = {addItemToCart, cartItems, allQuantity, decreaseItemQuantity, removeItem, totalCost};
 
     return(
         <ItemsContext.Provider value={value}>{children}</ItemsContext.Provider>
