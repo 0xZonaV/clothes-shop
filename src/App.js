@@ -5,24 +5,15 @@ import ShopPage from "./routes/shop/shop-page.component";
 import Authentication from "./routes/authentication/authentication.component";
 import CheckoutPage from "./routes/checkout/checkout-page.component";
 import {useEffect} from "react";
-import {
-    createUserDocumentFromAuth,
-    onAuthStateChangedListener
-} from "./utils/firebase/firebase.utils";
-import {setCurrentUser} from "./store/user/user-action";
 import {useDispatch} from "react-redux";
+import {checkUserSession} from "./store/user/user-action";
 
 const App = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        onAuthStateChangedListener((user) => {
-            if (user) {
-                createUserDocumentFromAuth(user);
-            }
-            dispatch(setCurrentUser(user));
-        });
-    },[dispatch]);
+        dispatch(checkUserSession());
+    },[]);
 
   return (
       <Routes>
