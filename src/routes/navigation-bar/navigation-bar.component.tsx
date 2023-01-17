@@ -1,5 +1,6 @@
 import { Outlet} from "react-router-dom";
 import {Fragment} from "react";
+// @ts-ignore
 import {ReactComponent as CrwmLogo} from "../../assets/crown.svg";
 import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
