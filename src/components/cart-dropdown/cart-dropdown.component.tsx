@@ -4,8 +4,9 @@ import CartItem from "../cart-item/cart-item.component";
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {selectCartItems} from "../../store/cart/cart-selector";
+import {FC} from "react";
 
-const CartDropdown = () => {
+const CartDropdown: FC = () => {
     const cartItems = useSelector(selectCartItems);
 
     return (

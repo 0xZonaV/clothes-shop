@@ -1,12 +1,13 @@
 import './category-item.styles.scss';
 import {useNavigate} from "react-router-dom";
 import {categoriesType} from "../categories-container/categories-container.component";
+import {FC} from "react";
 
 type CategoryItemProps = {
     category: categoriesType;
 }
 
-const CategoryItemComponent = ({category}: CategoryItemProps) => {
+const CategoryItemComponent: FC<CategoryItemProps> = ({category}) => {
 
     const {imageUrl, routeUrl, title} = category;
 

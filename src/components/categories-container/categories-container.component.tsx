@@ -1,5 +1,6 @@
 import './categories-container.styles.scss';
 import CategoryItemComponent from "../category-item/category-item.component";
+import {FC} from "react";
 
 export type categoriesType = {
     id: number;
@@ -8,7 +9,7 @@ export type categoriesType = {
     routeUrl: string;
 }
 
-const CategoriesContainerComponent = () => {
+const CategoriesContainerComponent: FC = () => {
 
     const categories: categoriesType[] = [
         {

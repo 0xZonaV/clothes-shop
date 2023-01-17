@@ -2,10 +2,10 @@ import './categories-preview.style.scss';
 import CategoryPreview from "../../components/category-preview/category-preview.component";
 import {useSelector} from "react-redux";
 import {selectCategoriesIsLoading, selectCategoriesMap} from "../../store/category/category-selector";
-import {Fragment} from "react";
+import {FC, Fragment} from "react";
 import Spinner from "../../components/loading-spinner/spinner.component";
 
-const CategoriesPreview = () => {
+const CategoriesPreview: FC = () => {
     const categoriesMap = useSelector(selectCategoriesMap);
     const isLoading = useSelector(selectCategoriesIsLoading)
 

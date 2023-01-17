@@ -1,6 +1,7 @@
 import {SpinnerOverlay, SpinnerContainer} from './spinner.style';
+import {FC} from "react";
 
-const Spinner = () =>
+const Spinner: FC = () =>
     <SpinnerOverlay>
         <SpinnerContainer />
     </SpinnerOverlay>

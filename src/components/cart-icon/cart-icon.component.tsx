@@ -1,10 +1,12 @@
 import './cart-icon.style.scss';
+// @ts-ignore
 import { ReactComponent as ShopingBag } from "../../assets/shopping-bag.svg";
 import {useDispatch, useSelector} from "react-redux";
 import {selectCartQuantity, selectIsCartOpen} from "../../store/cart/cart-selector";
 import {setIsCartOpen} from "../../store/cart/cart-action";
+import {FC} from "react";
 
-const CartIcon = () => {
+const CartIcon: FC = () => {
     const dispatch = useDispatch();
     const isCartOpen = useSelector(selectIsCartOpen);
 
