@@ -4,8 +4,7 @@ import './sign-up-form.style.scss';
 import Button from "../button/button.component";
 import {useDispatch} from "react-redux";
 import {signUpStart} from "../../store/user/user-action";
-import firebase from "firebase/compat";
-import AuthError = firebase.auth.AuthError;
+import { AuthError, AuthErrorCodes } from 'firebase/auth';
 
 const deafultFormFields = {
     displayName: '',
@@ -34,7 +33,7 @@ const SignUpForm = () => {
             dispatch(signUpStart(email, password, displayName));
             resetFormFields();
         } catch (error) {
-            if ((error as AuthError).code === 'auth/email-already-in-use') {
+            if ((error as AuthError).code === AuthErrorCodes.EMAIL_EXISTS) {
                 alert('Email already in use')
             }
             console.log(error);

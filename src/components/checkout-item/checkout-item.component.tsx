@@ -3,18 +3,18 @@ import {useDispatch, useSelector} from "react-redux";
 import {addItemToCart, decreaseItemQuantity, removeItem} from "../../store/cart/cart-action";
 import {selectCartItems} from "../../store/cart/cart-selector";
 import {CartItemType} from "../../store/cart/cart-types";
-import {FC} from "react";
+import {FC, memo} from "react";
 
 type CheckoutItemProps = {
     cartItem: CartItemType;
 }
 
-const CheckoutItem: FC<CheckoutItemProps> = ({cartItem}) => {
+const CheckoutItem: FC<CheckoutItemProps> = memo(({cartItem}) => {
     const {imageUrl, name, quantity, price} = cartItem;
     const dispatch = useDispatch();
     const cartItems = useSelector(selectCartItems);
 
-    const increase =() => dispatch(addItemToCart(cartItems, cartItem));
+    const increase = () => dispatch(addItemToCart(cartItems, cartItem));
 
 
     const decrease = () => dispatch(decreaseItemQuantity(cartItems, cartItem))
@@ -37,6 +37,6 @@ const CheckoutItem: FC<CheckoutItemProps> = ({cartItem}) => {
                 </div>
             <div onClick={remove} className='remove-button'>&#10005;</div>
         </div>)
-}
+})
 
 export default CheckoutItem;

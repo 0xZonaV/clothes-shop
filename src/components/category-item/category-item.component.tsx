@@ -1,7 +1,7 @@
 import './category-item.styles.scss';
 import {useNavigate} from "react-router-dom";
 import {categoriesType} from "../categories-container/categories-container.component";
-import {FC} from "react";
+import {FC, useCallback} from "react";
 
 type CategoryItemProps = {
     category: categoriesType;
@@ -13,7 +13,10 @@ const CategoryItemComponent: FC<CategoryItemProps> = ({category}) => {
 
     const navigate = useNavigate();
 
-    const onNavigateHandler = () => navigate(routeUrl);
+    const onNavigateHandler = useCallback(
+        () => navigate(routeUrl)
+        ,[]
+    );
 
     return(
         <div className='category-container' onClick={onNavigateHandler}>
