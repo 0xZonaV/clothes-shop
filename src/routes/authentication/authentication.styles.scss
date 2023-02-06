@@ -3,4 +3,11 @@
   justify-content: space-between;
   width: 900px;
   margin: 30px auto;
+
+  @media screen and (max-width: 800px) {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: unset;
+    row-gap: 40px;
+  }
 }

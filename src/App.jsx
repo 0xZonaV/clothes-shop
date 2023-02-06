@@ -3,8 +3,9 @@ import {lazy, Suspense, useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {checkUserSession} from "./store/user/user-action";
 
-import Spinner from "./components/loading-spinner/spinner.component";
 
+import Spinner from "./components/loading-spinner/spinner.component";
+import {GlobalStyle} from "./global.styles";
 const NavigationBar = lazy(() => import ("./routes/navigation-bar/navigation-bar.component"));
 const ShopPage = lazy(() => import ("./routes/shop/shop-page.component"));
 const Authentication = lazy(() => import ("./routes/authentication/authentication.component"));
@@ -19,16 +20,19 @@ const App = () => {
     },[]);
 
   return (
-      <Suspense fallback={<Spinner />} >
-          <Routes>
-            <Route path='/' element={<NavigationBar />}>
-                <Route index element={<HomePage />} />
-                <Route path='shop/*' element={<ShopPage />} />
-                <Route path='auth' element={<Authentication />} />
-                <Route path='checkout' element={<CheckoutPage />} />
-            </Route>
-          </Routes>
-      </Suspense>
+      <div>
+          <GlobalStyle />
+          <Suspense fallback={<Spinner />} >
+              <Routes>
+                <Route path='/' element={<NavigationBar />}>
+                    <Route index element={<HomePage />} />
+                    <Route path='shop/*' element={<ShopPage />} />
+                    <Route path='auth' element={<Authentication />} />
+                    <Route path='checkout' element={<CheckoutPage />} />
+                </Route>
+              </Routes>
+          </Suspense>
+      </div>
   );
 }
 
